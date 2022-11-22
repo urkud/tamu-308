@@ -307,7 +307,7 @@ $-ik-l=0$. To avoid division by complex numbers[^compl-division], take
 $k=1$, then $l=-i$. So, $v=\begin{pmatrix}1\\-i\end{pmatrix}$ is an
 eigenvector of $A$ with eigenvalue $2+i$.
 
-In terms of {ref}`eqn:complex-eigenvals-solution`, we have $λ=2$,
+In terms of {eq}`eqn:complex-eigenvals-solution`, we have $λ=2$,
 $μ=1$, $\mathbf{a}=\begin{pmatrix}1\\0\end{pmatrix}$,
 $\mathbf{b}=\begin{pmatrix}0\\-1\end{pmatrix}$. Then the general
 formula gives implies that

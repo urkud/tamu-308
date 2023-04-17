@@ -338,14 +338,337 @@ $y=2x-x'=e^{2t}(C₁\sin t-C₂\cos t)$.
 
 ## Repeated eigenvalues
 
-If $A$ has a repeated eigenvalue $λ$, then one can use the
-"alternative" method of solution with $x=C₁e^{λt}+C₂te^{λt}$
+We start with a few examples, then explain the general method.
 
-```{todo}
-Expand, add an example, explain how to solve using eigenvalues and
-eigenvectors.
-```
+````{prf:example}
+:label: ex-jordan
+
+Consider the linear system
+
+$$
+x'&=3x+y\\
+y'&=3y
+$$
+
+The corresponding matrix $A=\begin{pmatrix}3&1\\0&3\end{pmatrix}$ has
+a repeated eigenvalue $3$ with an eigenvector
+$\begin{pmatrix}1\\0\end{pmatrix}$. So, {prf:ref}`eigenvect-solutions`
+gives us only one solution $x(t)=Ce^{3t}$, $y(t)=0$. This solution is
+not enough to find a general solution.
+
+Instead, we can solve the second equation: $y=C₁e^{3t}$, hence the
+first equation can be written as $x'-3x=C₁e^{3t}$. This is a linear
+equation on $x$ with complementary function $x_c=C₂e^{3t}$. Since
+$e^{3t}$ from the RHS appears in the complementary function, a good
+guess for a particular solution is $x_p=Ate^{3t}$. We have
+$(Ate^{3t})'-3Ate^{3t}=Ae^{3t}$, hence $A=C₁$. Finally,
+
+$$
+x&=C₁te^{3t}+C₂e^{3t}\\
+y&=C₁e^{3t}.
+$$
+
+Similarly to the case of higher order linear equations with repeated
+roots of the characteristic polynomial, the formula for a general
+solution has terms $e^{3t}$ and $te^{3t}$.
+````
+
+````{prf:example} A system with a diagonal matrix
+Consider the linear system
+
+$$
+x'&=3x\\
+y'&=3y
+$$
+
+We can solve the equations of this system separately: $x(t)=C₁e^{3t}$,
+$y(t)=C₂e^{3t}$.
+
+The corresponding matrix $A=\begin{pmatrix}3&0\\0&3\end{pmatrix}$ has
+a repeated eigenvealue $3$. In this case, repeated eigenvalues do not
+generate terms with $te^{3t}$ in the answer. In dimension two,
+
+$$
+x'&=λx\\
+y'&=λy
+$$
+
+is the only type of a linear system with repeated eigenvalues but no
+$te^{λt}$ in a general soluiton.
+````
+
+`````{prf:example}
+Consider the system
+
+$$
+x'&=-x+4y,\\
+y'&=-x+3y.
+$$
+
+The corresponding matrix $A=\begin{pmatrix}-1&4\\-1&3\end{pmatrix}$
+has a repeated eigenvalue $λ=1$.
+
+````{tab} Eigenvectors
+Take a vector $v₁$ that is **not** an eigenvector of $A$. E.g.,
+$v₁=\begin{pmatrix}1\\0\end{pmatrix}$. Then we compute
+
+$$
+v₂=Av₁-λv₁=\begin{pmatrix}-2\\-1\end{pmatrix}.
+$$
+
+Note that $v₂$ is an eigenvector of $A$, $Av₂=v₂$. Thus $e^tv₂$ is a
+solution of the original system. Another solution is given by
+$e^t(tv₂+v₁)$. Finally,
+
+$$
+\begin{pmatrix}x\\y\end{pmatrix}&=C₁e^t(v₁+tv₂)+C₂e^tv₂\\
+&=C₁e^t\begin{pmatrix}1-2t\\-t\end{pmatrix}+C₂e^t\begin{pmatrix}-2\\-1\end{pmatrix}
+$$
+
+In other words,
+
+$$
+x&=C₁e^t(1-2t)-2C₂e^t\\
+y&=-C₁te^t-C₂e^t.
+$$
+````
+````{tab} Alternative method
+From our experience with higher order differential equations and from
+the general theory (see below), $y(t)$ has the form $C₁te^t+C₂e^t$ for
+some $C₁$, $C₂$. Then
+
+$$
+x&=3y-y'\\
+&=3C₁te^t+3C₂e^t-C₁e^t-C₁te^t-C₂e^t\\
+&=C₁e^t(2t-1)+2C₂e^t.
+$$
+
+This answer differs from the answer we found using eigenvectors by the
+change of sign of both $C₁$ and $C₂$.
+````
+`````
+
+Now we describe the general method. Assume that the matrix $A$ of a
+linear sytem $x'=ax+by$, $y'=cx+dy$ has a repeated eigenvalue $λ$. If
+$A$ is the diagonal matrix $λI$, then the solution is given by
+$x(t)=x(0)e^{λt}$, $y(t)=y(0)e^{λt}$. Otherwise, we can use one of the
+following two methods.
+
+````{tab} Eigenvectors
+* Choose a vector $v₁$ that is **not** an eigenvector of $A$. Either
+  $\begin{pmatrix}1\\0\end{pmatrix}$ or
+  $\begin{pmatrix}0\\1\end{pmatrix}$ will work.
+* Compute $v₂=Av₁-λv₁$.
+* Optional sanity check: $v₂$ is an eigenvector of $A$, $v₂≠0$ and
+  $Av₂=λv₂$.
+* Write the answer:
+  $\begin{pmatrix}x\\y\end{pmatrix}=C₁e^{λt}(v₁+tv₂)+C₂e^{λt}v₂$.
+* If required, reformulate the answer as $x=\dots$, $y=\dots$.
+````
+````{tab} Alternative method
+* Put $x=e^{λt}(C₁+C₂t)$.
+* Compute $y=\frac{x'-ax}{b}$.
+
+This will only fail if $b=0$. In this case we swap the roles of $x$
+and $y$.
+
+* Put $y=e^{λt}(C₁+C₂t)$.
+* Compute $x=\frac{y'-dy}{c}$.
+````
 
 ## Fundamental matrix of solutions
 
+Consider the system of linear ODEs given by
+
+$$
+x'&=2x+3y\\
+y'&=3x+2y
+$$
+
+As we saw in {prf:ref}`ex-distinct-eigenvals`, a general solution of
+this system is given by
+
+$$
+\begin{pmatrix}x\\y\end{pmatrix}
+&=C₁e^{-t}\begin{pmatrix}1\\-1\end{pmatrix}+
+C₂e^{5t}\begin{pmatrix}1\\1\end{pmatrix}\\
+&=\begin{pmatrix}e^{-t}&e^{5t}\\-e^{-t}&e^{5t}\end{pmatrix}
+\begin{pmatrix}C₁\\C₂\end{pmatrix},
+$$
+
+where the last equality follows from the definition of matrix
+multiplication. This means that *any solution* of this system can be
+written as $\mathbf{Ψ}(t)v$, where
+$\mathbf{Ψ}(t)=\begin{pmatrix}e^{-t}&e^{5t}\\-e^{-t}&e^{5t}\end{pmatrix}$
+and $v=\begin{pmatrix}C₁\\C₂\end{pmatrix}$ is an arbitrary vector.
+
+A matrix $\mathbf{Ψ}(t)$ with this property is called a *fundamental
+matrix of solutions* of the system. As we will see below, a system can
+have many fundamental matrices of solutions.
+
+A fundamental matrix is useful, e.g., to solve many initial value
+problems with the same matrix.
+
+```{prf:example}
+Consider the system of linear ODEs given by
+
+$$
+x'&=2x+3y\\
+y'&=3x+2y
+$$
+
+Solve the initial value problems
+
+* $x(0)=1$, $y(0)=-1$;
+* $x(0)=-1$, $y(0)=-1$;
+* $x(0)=3$, $y(0)=4$.
+
+In each case, we need to find a vector $v$ such that
+$\mathbf{Ψ}(0)v=\begin{pmatrix}x(0)\\y(0)\end{pmatrix}$, where $\mathbf{Ψ}(t)=\begin{pmatrix}e^{-t}&e^{5t}\\-e^{-t}&e^{5t}\end{pmatrix}$
+is the fundamental matrix we found above.
+
+Compute $\mathbf{Ψ}(0)=\begin{pmatrix}1&1\\-1&1\end{pmatrix}$, hence
+we need to solve $C₁+C₂=x(0)$, $-C₁+C₂=y(0)$. Instead of solving this
+system in each case, we can solve it once, then substitute the initial
+values. We have $C₁=\frac{x(0)-y(0)}{2}$, $C₂=\frac{x(0)+y(0)}{2}$.
+
+This immediately gives us the answers
+
+* $C₁=1$, $C₂=0$, $x=e^{-t}$, $y=-e^{-t}$.
+* $C₁=0$, $C₂=-1$, $x=-e^{5t}$, $y=-e^{5t}$.
+* $C₁=-0.5$, $C₂=3.5$, $x=-0.5e^{-t}+3.5e^{5t}$,
+  $y=0.5e^{-t}+3.5e^{5t}$.
+```
+
+If we substitute $C₁=\frac{x(0)-y(0)}{2}$, $C₂=\frac{x(0)+y(0)}{2}$
+into the general solution, we get
+
+$$
+\begin{pmatrix}x\\y\end{pmatrix}
+&=\frac{x(0)-y(0)}{2}e^{-t}\begin{pmatrix}1\\-1\end{pmatrix}+
+\frac{x(0)+y(0)}{2}e^{5t}\begin{pmatrix}1\\1\end{pmatrix}\\
+&=x(0)\begin{pmatrix}\frac{e^{5t}+e^{-t}}{2}\\\frac{e^{5t}-e^{-t}}{2}\end{pmatrix}
++y(0)\begin{pmatrix}\frac{e^{5t}-e^{-t}}{2}\\\frac{e^{5t}+e^{-t}}{2}\end{pmatrix}\\
+&=\begin{pmatrix}\frac{e^{5t}+e^{-t}}{2}&\frac{e^{5t}-e^{-t}}{2}\\\frac{e^{5t}+e^{-t}}{2}&\frac{e^{5t}-e^{-t}}{2}\end{pmatrix}
+\begin{pmatrix}x(0)\\y(0)\end{pmatrix}
+$$
+
+This means that
+$\begin{pmatrix}\frac{e^{5t}+e^{-t}}{2}&\frac{e^{5t}-e^{-t}}{2}\\\frac{e^{5t}+e^{-t}}{2}&\frac{e^{5t}-e^{-t}}{2}\end{pmatrix}$
+is another fundamental matrix of the original system.
+
 ## Matrix exponential
+
+Again, consider the system
+
+$$
+x'&=2x+3y,\\
+y'&=3x+2y.
+$$
+
+In the previous section, we found two different fundamental matrices
+of this sytem,
+
+$$
+\mathbf{Ψ₁}&=\begin{pmatrix}e^{-t}&e^{5t}\\-e^{-t}&e^{5t}\end{pmatrix}\\
+\mathbf{Ψ₂}&=\begin{pmatrix}\frac{e^{5t}+e^{-t}}{2}&\frac{e^{5t}-e^{-t}}{2}\\\frac{e^{5t}+e^{-t}}{2}&\frac{e^{5t}-e^{-t}}{2}\end{pmatrix}
+$$
+
+While the second matrix is more complicated, it has one very important
+property: $\mathbf{Ψ₂}(0)=I$, hence the solution of an initial value
+problerm is given by
+$\mathbf{Ψ₂}(t)\begin{pmatrix}x(0)\\y(0)\end{pmatrix}$. So, this
+fundamental matrix allows us to solve initial value problems very
+quickly.
+
+It turns out that with a proper definition of the exponential of a
+matrix, this fundamental matrix is given by $e^{At}$, thus the
+solution of an initial value problem can be written as
+
+$$
+\begin{pmatrix}x(t)\\y(t)\end{pmatrix}=
+e^{At}\begin{pmatrix}x(0)\\y(0)\end{pmatrix}.
+$$
+
+This formula is very similar to the formula $x(t)=x₀e^{λt}$ for the
+solution of the one-dimensional initial value problem $x'=λx$,
+$x(0)=x₀$. Another important fact about this formula is that computer
+algebra systems can find matrix exponentials, thus you can solve an
+initial value problem in a few lines of code.
+
+The formal definition of the matrix exponential is provided for
+curious readers but will never be used in the course.
+
+```{prf:definition}
+If $A$ is a square matrix (i.e., the number of rows is equal to the
+number of columns), then $e^A$ is defined as the sum of the series
+
+$$
+e^A=\sum_{n=0}^∞ \frac{A^n}{n!},
+$$
+
+where $A^n$ means $A$ to the $n$-th power in the sense of matrix
+multiplication.
+```
+
+To find $e^{At}$ without using a computer, one needs to solve the
+system $x'=Ax$ with initial conditions
+$x(0)=\begin{pmatrix}1\\0\end{pmatrix}$ and
+$x(0)=\begin{pmatrix}0\\1\end{pmatrix}$, then write these solutions as
+the first and the second **column** of the answer, respectively.
+
+**NB**: there was a typo in the previous paragraph ("row" instead of
+column), fixed on 12/07/2022 in the morning.
+
+```{prf:example}
+Find $e^{At}$, where $A=\begin{pmatrix}1&1\\4&1\end{pmatrix}$.
+
+The eigenvalues of $A$ are $-1$ and $3$, the corresponding
+eigenvectors are $\begin{pmatrix}1\\-2\end{pmatrix}$ and
+$\begin{pmatrix}1\\2\end{pmatrix}$. Hence, $x(t)=C₁e^{-t}+C₂e^{3t}$,
+$y(t)=-2C₁e^{-t}+2C₂e^{3t}$ is a general solution of
+$\begin{pmatrix}x\\y\end{pmatrix}'=A\begin{pmatrix}x\\y\end{pmatrix}$.
+
+For initial conditions $x(0)=1$, $y(0)=0$, we find $C₁=C₂=1/2$,
+$x(t)=\frac{e^{-t}+e^{3t}}{2}$, $y(t)=e^{3t}-e^{-t}$.
+
+For initial conditions $x(0)=0$, $y(0)=1$, we find $C₁=-1/4$,
+$C₂=1/4$, $x(t)=\frac{e^{3t}-e^{-t}}{4}$,
+$y(t)=\frac{e^{-t}+e^{3t}}{2}$.
+
+Thus
+
+$$
+e^{At}=
+  \begin{pmatrix}
+	\frac{e^{-t}+e^{3t}}{2}&\frac{e^{3t}-e^{-t}}{4}\\
+	e^{3t}-e^{-t}&\frac{e^{-t}+e^{3t}}{2}
+  \end{pmatrix}
+$$
+```
+
+## Solving systems of linear ODEs with computer
+
+TODO
+
+## Method of undetermined coefficients
+
+In this section we discuss how to solve a linear system
+$x'(t)=Ax(t)+b(t)$, where the coordinates of $b(t)$ are linear
+combinations of the terms $t^ke^{λt}$, $t^ke^{λt}\cos(μt)$,
+$t^ke^{λt}\sin(μt)$.
+
+As in the case of higher order linear ODEs, we find the complementary
+function $x_c$ (a.k.a. the general solution of $x_c'=Ax_c$), then find
+a particular solution $x_p$, and write the answer $x=x_c+x_p$. To find
+a “good guess” that is guaranteed to work, we use almost the same
+rules as the ones we used for higher order ODEs[^rules], with one
+important modification: if a term (e.g., $e^{λt}$) appears in the
+complementary function, then we need **both** $A₁e^{λt}$ and
+$A₂te^{λt}$ in the “guess”; if $λ$ is an eigenvalue of multiplicity
+$2$, then we also need $A₃t²e^{λt}$.
+
+[^rules]: TODO: repeat the rules here
+
+For examples, see [scans from lecture on Nov 28](./_static/Nov28.pdf)
+and [photos of the whiteboard from Nov 30](./_static/20221130.zip)
